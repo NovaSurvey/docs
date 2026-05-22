@@ -6,9 +6,6 @@ Welcome to the official documentation repository for the **NovaSurvey Statistica
 
 The documentation is organized into the following sections:
 
-### 1. [Methodology Guides](./methodology_guides/)
-This folder contains the theoretical foundations and official reference methodology PDFs upon which NovaSurvey is built (e.g., G-Est, Banff, G-Sam, G-Confid). These documents provide the mathematical proofs and established frameworks for official statistics.
-
 ### 2. [Module Manuals](./module_manuals/)
 Markdown manuals specific to each of the 8 core NovaSurvey modules. These explain how the theoretical methodology is specifically implemented within the engine's Python/Polars backend.
 - Sampling
