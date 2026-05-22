@@ -25,4 +25,4 @@ High-level system design documents, certification reports, development roadmaps,
 
 ---
 
-*For the mathematical source code, please refer to the private `NovaSurvey/core` repository. For the API and Desktop Application code, please refer to the `NovaSurvey/engine` repository.*
+
