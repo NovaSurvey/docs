@@ -1,0 +1,133 @@
+Here is the comprehensive, updated master plan for your Statistical Backend-as-a-Service.
+
+This plan synthesizes the architectural decisions we’ve made into a phased, executable roadmap. It focuses exclusively on building a 100% proprietary, enterprise-grade, on-premise Python engine that ingests raw Parquet data and outputs publication-ready, mathematically rigorous estimates.
+
+The Architecture: "The Python Stat-Engine"
+Before breaking down the phases, here is the finalized blueprint of the system you are building:
+
+The Ingestion Standard: Strict Parquet-only data pipelines for lossless, high-speed memory management.
+
+The Control Layer: A JSON "Metadata Contract" that acts as the universal language telling the engine what methodologies to apply.
+
+The Orchestrator: FastAPI to handle internal routing and web requests.
+
+The Math Engine: Polars (for lightning-fast data manipulation) and NumPy/SciPy (for complex matrix algebra and calibration), ensuring zero GPL-3.0 licensing conflicts.
+
+The Deployment: Fully containerized via Docker for secure, air-gapped, on-premise installation at institutional clients.
+
+Phase 1: The "Tracer Bullet" MVP (Edit & Imputation)
+Goal: Build a single, functioning microservice that proves the end-to-end architecture works locally.
+Focus: Steps 6.
+
+Environment Setup
+
+Initialize the project workspace in the Antigravity IDE.
+
+Set up a Python virtual environment and install dependencies: polars, fastapi, uvicorn, and pytest.
+
+The Metadata Schema Design
+
+Finalize the test_payload.json structure to handle deterministic coherence rules (e.g., E001: Age vs. Marital Status) and probabilistic imputation parameters (e.g., nearest neighbor donor classes).
+
+The Core Engine (engine.py)
+
+Write the Polars logic to parse the JSON coherence rules into lazy-evaluated filters.
+
+Implement the first imputation algorithm (e.g., hot-deck or nearest-neighbor) natively in Python.
+
+The API Gateway (api.py)
+
+Wrap the engine in a FastAPI endpoint (POST /api/v1/impute).
+
+Configure it to accept the JSON payload and the path to the Parquet file.
+
+Quality Control Validation
+
+Generate a simulated "Golden" Parquet dataset.
+
+Inject controlled missingness (MCAR and MAR).
+
+Run the dataset through the API and use pytest to mathematically verify the imputation accuracy against the golden dataset.
+
+Phase 2: The Rigorous Math (Calibration & Estimation)
+Goal: Translate complex official statistical methodology into a pure Python library to establish your proprietary IP moat.
+Focus: Steps 7 & 8.
+
+Weighting & Calibration Engine
+
+Build the ingestion logic for auxiliary/benchmark totals.
+
+Translate Generalized Regression (GREG) estimators and raking ratio methodologies into NumPy matrix operations to calculate non-response adjustments and final calibration weights.
+
+Complex Variance Estimation
+
+Implement Taylor series linearization for standard complex survey designs.
+
+Build modules for replicate weight methods (Bootstrap, Jackknife, BRR) to handle situations where linearization isn't feasible.
+
+Microservice Integration
+
+Create a new FastAPI endpoint (POST /api/v1/estimate) that receives the imputed Parquet file from Phase 1 and the calibration JSON, outputting the final weighted point estimates and their variances.
+
+Phase 3: The Enterprise Wrapper (Confidentiality & Output)
+Goal: Make the software compliant with the strict data privacy laws required by institutional and government clients.
+Focus: Steps 9 & 10.
+
+Disclosure Control Algorithms
+
+Develop the logic to evaluate the weighted final tables against minimum cell count thresholds.
+
+Implement primary and secondary cell suppression algorithms to prevent reverse-engineering of microdata.
+
+Automated QA Reporting
+
+Build a reporting script that logs the entire pipeline's lifecycle.
+
+Output a structured summary detailing imputation rates (by variable), calibration convergence diagnostics, and a list of cells suppressed for confidentiality.
+
+Docker Containerization
+
+Write the Dockerfile and docker-compose.yml.
+
+Package the entire FastAPI, Polars, and NumPy stack into a deployable container image, ensuring it runs flawlessly in a completely offline environment.
+
+Phase 4: The AI Orchestration (The "Brain")
+Goal: Abstract the complex JSON parameters away from the end-user so the platform can be operated using plain-English objectives.
+Focus: Front-end AI routing and the Metadata Loophole.
+
+The AI Prompt Architecture
+
+Design the system prompts to act as a "Lead Methodologist."
+
+Configure the AI to accept a data dictionary and plain-English goals, outputting the strict JSON Metadata Contract required by your Python backend.
+
+Hybrid Model Routing
+
+Set up a routing layer that sends heavy logical reasoning (drafting the initial statistical strategy) to a high-capacity model (Gemini 3.1 Pro).
+
+Route lighter, rapid formatting tasks (like parsing the QA report for the user dashboard) to a faster, quota-efficient model (Gemini Flash).
+
+The "Metadata Loophole" Implementation
+
+Ensure the architecture strictly separates the data. The cloud AI only ever sees variable names and metadata, while the highly confidential Parquet microdata never leaves the client's on-premise Docker container.
+
+Phase 5: Advanced Modeling & Deep Integration (SAE, HB, SDC)
+Goal: Elevate the platform to handle the most complex statistical tasks including Small Area Estimation and Exact Optimal Disclosure Control.
+
+Small-Area Estimation (SAE) & Hierarchical Bayes (HB)
+- Implement EBLUP (Empirical Best Linear Unbiased Prediction) for area-level and unit-level models.
+- Build a full Hierarchical Bayes engine with Gibbs sampling and Metropolis-Hastings for robust inference in data-scarce domains.
+
+Statistical Disclosure Control (SDC)
+- Implement simultaneous multi-cell protection using Exact Optimal MILP solvers.
+- Build automated audit routines to mathematically verify the safety of published tables.
+
+Final Pipeline Integration
+- Unified PipelineManager orchestrating all 8 modules (A-H).
+- End-to-end "one-click" execution from raw Parquet to SDC-protected outputs.
+- Comprehensive QA reporting integrating diagnostics from all simulation and optimization steps.
+
+Project Status: 100% Core Methodology Implemented and Integrated.
+- All 8 modules (A-H) are functional, tested, and orchestrated.
+- Production-ready Docker containerization complete.
+- AI Metadata orchestration fully aligned with the proprietary Python backend.

@@ -1,0 +1,1771 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NovaSurvey Console - Master User Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #00f0ff;
+            --primary-grad: linear-gradient(135deg, #00f0ff 0%, #7000ff 100%);
+            --accent: #ff007f;
+            --text: #f5f6fa;
+            --text-secondary: #8f92a1;
+            --success: #00ff66;
+            --editing: #00f0ff;
+            --imputation: #00ff66;
+            --weighting: #7000ff;
+            --sampling: #ffaa00;
+            --estimation: #ff007f;
+            --ts: #ffff00;
+            --privacy: #ff5500;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.03) 0%, transparent 40%);
+        }
+        .sidebar {
+            width: 320px;
+            background: rgba(11, 12, 16, 0.95);
+            border-right: 1px solid var(--border);
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            padding: 40px 24px;
+            overflow-y: auto;
+            backdrop-filter: blur(20px);
+            z-index: 100;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .sidebar-logo {
+            text-align: center;
+        }
+        .logo-text {
+            font-size: 1.3rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 5px;
+        }
+        .logo-subtitle {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+        .nav-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .nav-header {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            margin-top: 15px;
+        }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-decoration: none;
+            color: var(--text-secondary);
+            padding: 10px 16px;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            border: 1px solid transparent;
+        }
+        .nav-item:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.03);
+            transform: translateX(4px);
+        }
+        .nav-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            color: #fff;
+        }
+        .main-content {
+            margin-left: 320px;
+            flex: 1;
+            padding: 60px 50px;
+            max-width: 1100px;
+        }
+        header {
+            margin-bottom: 60px;
+        }
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 800;
+            letter-spacing: -1.5px;
+            margin-bottom: 20px;
+            text-shadow: 0 0 30px rgba(0, 240, 255, 0.15);
+        }
+        .lead-text {
+            font-size: 1.25rem;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        .section-divider {
+            height: 1px;
+            background: var(--border);
+            margin: 60px 0;
+            border: none;
+        }
+        .module-section {
+            scroll-margin-top: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 15px 50px rgba(0, 240, 255, 0.08);
+        }
+        .card-header-flex {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            gap: 20px;
+        }
+        .card-title-flex {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .card-cat-badge {
+            font-size: 0.8rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #fff;
+            border: 1px solid transparent;
+        }
+        h2 {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+        }
+        .card-desc {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            line-height: 1.7;
+        }
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        @media (max-width: 950px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 14px 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        td {
+            font-size: 0.95rem;
+        }
+        .flag {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .type {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-req {
+            background: rgba(255, 0, 127, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(255, 0, 127, 0.3);
+        }
+        .badge-opt {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .meta-card {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .path-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            word-break: break-all;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: var(--primary-grad);
+            color: #fff;
+            text-decoration: none;
+            padding: 12px 24px;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            width: 100%;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0, 240, 255, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+        }
+        .btn-outline:hover {
+            background: rgba(0, 240, 255, 0.05);
+        }
+        .code-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .code-box {
+            background: #050608;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--primary);
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+        .code-action-row {
+            display: flex;
+            gap: 15px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 100px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+        .step-num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: rgba(0, 240, 255, 0.15);
+            color: var(--primary);
+            font-weight: 800;
+            margin-right: 15px;
+            font-size: 0.9rem;
+        }
+        .step-row {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 25px;
+        }
+        .step-text {
+            flex: 1;
+        }
+        .step-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+        .step-desc {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+        }
+    </style>
+</head>
+<body>
+    <div class="sidebar">
+        <div class="sidebar-logo">
+            <div class="logo-text">NovaSurvey</div>
+            <div class="logo-subtitle">Master User Guide</div>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="#quickstart" class="nav-item" style="color: #fff; font-weight: 600;">
+                <span>🚀 Quickstart Guide</span>
+            </a>
+            
+            <div class="nav-header">Statistical Modules</div>
+            
+        <a href="#outliers" class="nav-item">
+            <span>Outlier Detection</span>
+            <span class="nav-badge" style="background: var(--editing);">editing</span>
+        </a>
+        
+        <a href="#imputation" class="nav-item">
+            <span>Imputation Engine</span>
+            <span class="nav-badge" style="background: var(--imputation);">imputation</span>
+        </a>
+        
+        <a href="#editing" class="nav-item">
+            <span>Error Localization & Editing</span>
+            <span class="nav-badge" style="background: var(--editing);">editing</span>
+        </a>
+        
+        <a href="#nonresponse" class="nav-item">
+            <span>Nonresponse Weighting Adjustment</span>
+            <span class="nav-badge" style="background: var(--weighting);">weighting</span>
+        </a>
+        
+        <a href="#calibration" class="nav-item">
+            <span>Bounded Survey Calibration</span>
+            <span class="nav-badge" style="background: var(--weighting);">weighting</span>
+        </a>
+        
+        <a href="#sampling" class="nav-item">
+            <span>Stratified Random Sampling Draw</span>
+            <span class="nav-badge" style="background: var(--sampling);">sampling</span>
+        </a>
+        
+        <a href="#influential" class="nav-item">
+            <span>Winsorization & Influential Units</span>
+            <span class="nav-badge" style="background: var(--estimation);">estimation</span>
+        </a>
+        
+        <a href="#sae" class="nav-item">
+            <span>Small Area Estimation (SAE)</span>
+            <span class="nav-badge" style="background: var(--estimation);">estimation</span>
+        </a>
+        
+        <a href="#variance" class="nav-item">
+            <span>Analytical Variance Estimation</span>
+            <span class="nav-badge" style="background: var(--estimation);">estimation</span>
+        </a>
+        
+        <a href="#seasonal" class="nav-item">
+            <span>Seasonal Adjustment</span>
+            <span class="nav-badge" style="background: var(--ts);">ts</span>
+        </a>
+        
+        <a href="#sdc" class="nav-item">
+            <span>Statistical Disclosure Control (SDC)</span>
+            <span class="nav-badge" style="background: var(--privacy);">privacy</span>
+        </a>
+        
+        <a href="#variance_imputation" class="nav-item">
+            <span>Nonresponse Variance Imputation</span>
+            <span class="nav-badge" style="background: var(--imputation);">imputation</span>
+        </a>
+        
+        </div>
+    </div>
+
+    <div class="main-content">
+        <header>
+            <h1>NovaSurvey Console Guide</h1>
+            <p class="lead-text">
+                Welcome to the complete user guide for the NovaSurvey Interactive Console (`nova_console.exe`). Below you will find interactive walkthroughs of the console lifecycle, detailed parameter definitions for all 12 platform-native statistical engines, and 100% realistic runnable execution commands.
+            </p>
+        </header>
+
+        <div id="quickstart" class="card" style="scroll-margin-top: 40px; margin-bottom: 60px;">
+            <div class="card" style="background: linear-gradient(135deg, rgba(255,0,127,0.08) 0%, rgba(112,0,255,0.08) 100%); border-color: rgba(255,0,127,0.3); margin-bottom: 40px; padding: 25px;">
+                <h3 style="color: #fff; font-size: 1.3rem; margin-bottom: 10px; display: flex; align-items: center; gap: 8px;">
+                    ✨ Zero-Loading Instant Demo Mode
+                </h3>
+                <p style="color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6;">
+                    Want to test NovaSurvey immediately without generating or loading any datasets? 
+                    Simply type <code style="color: var(--accent); font-family: monospace; font-weight: bold; background: rgba(0,0,0,0.3); padding: 3px 6px; border-radius: 4px;">demo &lt;module&gt;</code> 
+                    (e.g., <code style="color: var(--accent); font-family: monospace; font-weight: bold; background: rgba(0,0,0,0.3); padding: 3px 6px; border-radius: 4px;">demo outliers</code>) 
+                    directly into the interactive console! The console will automatically construct a schema-aligned 200-row demo dataset in-memory and execute the module instantly!
+                </p>
+            </div>
+            
+            <h2 style="font-size: 2.2rem; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                🚀 Interactive REPL Lifecycle
+            </h2>
+            
+            <div class="step-row">
+                <div class="step-num">1</div>
+                <div class="step-text">
+                    <div class="step-title">Generate Mock Testing Dataset</div>
+                    <div class="step-desc">
+                        Run the comprehensive mock script in your terminal to create a perfectly schema-aligned testing file:
+                        <div class="code-box" style="margin-top: 10px;">python create_comprehensive_sample.py</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-num">2</div>
+                <div class="step-text">
+                    <div class="step-title">Launch Interactive Console</div>
+                    <div class="step-desc">
+                        Launch the native console binary from your powershell prompt:
+                        <div class="code-box" style="margin-top: 10px;">.\dist\nova_console.exe</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-num">3</div>
+                <div class="step-text">
+                    <div class="step-title">Load Mock Dataset</div>
+                    <div class="step-desc">
+                        Once inside the interactive `nova>` prompt, load the testing dataset into active memory:
+                        <div class="code-box" style="margin-top: 10px; color: var(--primary);">load comprehensive_sample.parquet</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-num">4</div>
+                <div class="step-text">
+                    <div class="step-title">Generate R-like Summaries & Columns</div>
+                    <div class="step-desc">
+                        List columns or check exact statistical distributions across all variables:
+                        <div class="code-box" style="margin-top: 10px; color: var(--primary);">cols<br>summary</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-num">5</div>
+                <div class="step-text">
+                    <div class="step-title">Execute Statistical Runs</div>
+                    <div class="step-desc">
+                        Copy any of the 100% runnable examples below to execute calculations instantly. Active state changes are kept in-memory and chained automatically!
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-row">
+                <div class="step-num">6</div>
+                <div class="step-text">
+                    <div class="step-title">Export Mutated Dataset</div>
+                    <div class="step-desc">
+                        Save all your calculated survey weights, imputations, and seasonal adjustments back to disk:
+                        <div class="code-box" style="margin-top: 10px; color: var(--primary);">export completed_results.parquet</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr class="section-divider">
+
+        <h2 style="font-size: 2.5rem; margin-bottom: 40px; text-shadow: 0 0 20px rgba(0,240,255,0.1);">
+            Statistical Engine Documentation
+        </h2>
+
+        
+        <div id="outliers" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Outlier Detection</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--editing); border-color: rgba(255,255,255,0.1);">editing</span>
+            </div>
+            
+            <p class="card-desc">Performs robust outlier detection to flag extreme survey values for selective imputation using various statistical algorithms.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>The name of the numeric variable to check for extreme values.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Detection method. Options: 'hb' (Huber's Method) [default], 'sigma-gap', 'iforest' (Isolation Forest), 'knn', 'lof'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">threshold</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--threshold</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Deviation/cutoff threshold [default: 3.0].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">prev_column</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--prev_column</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Previous wave/period value column to match and compare against.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">group_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--group_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Stratum or grouping column for subgroup analysis.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Design weights column for weighted outlier detection.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">critical_threshold</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--critical_threshold</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Score threshold for marking an outlier as critical.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">editing/editing_manual.md</div>
+                    <a href="../editing/editing_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/editing/editing_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_outliers" style="font-family: 'Fira Code', monospace; color: var(--primary);">outliers(revenue, method="hb", threshold=2.5)</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_outliers')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_outliers" style="font-family: 'Fira Code', monospace; color: #fff;">run outliers --target revenue --method hb --threshold 2.5</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_outliers')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_outliers" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo outliers</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_outliers')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="imputation" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Imputation Engine</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--imputation); border-color: rgba(255,255,255,0.1);">imputation</span>
+            </div>
+            
+            <p class="card-desc">Runs bounded ratio, mean, donor, or machine learning (XGBoost, Random Forest) imputation on missing survey data.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Target column/variable to impute.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Imputation method: 'ratio' [default], 'mean', 'donor', 'xgboost', 'random_forest'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">aux</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--aux</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Comma-separated auxiliary predictor columns.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">group_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--group_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Grouping or stratum variable for conditional imputation.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Survey weights column.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">imputation/imputation_manual.md</div>
+                    <a href="../imputation/imputation_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/imputation/imputation_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_imputation" style="font-family: 'Fira Code', monospace; color: var(--primary);">imputation(part2, part1, method="ratio")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_imputation')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_imputation" style="font-family: 'Fira Code', monospace; color: #fff;">run imputation --target revenue --method ratio --aux base_weight</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_imputation')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_imputation" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo imputation</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_imputation')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="editing" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Error Localization & Editing</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--editing); border-color: rgba(255,255,255,0.1);">editing</span>
+            </div>
+            
+            <p class="card-desc">Performs automatic error localization and edit checks using the Fellegi-Holt methodology to identify and correct inconsistent fields.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--var</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated list of variables involved in the edit checks.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">total_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--total_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Optional total sum variable to validate against.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">edits</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--edits</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Comma-separated edit equations (e.g., 'sales <= revenue, sales >= 0').</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">editing/editing_manual.md</div>
+                    <a href="../editing/editing_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/editing/editing_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_editing" style="font-family: 'Fira Code', monospace; color: var(--primary);">editing(var="part1,part2,total", edits="total = part1 + part2")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_editing')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_editing" style="font-family: 'Fira Code', monospace; color: #fff;">run editing --var revenue,sales --edits "sales <= revenue, sales >= 0"</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_editing')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_editing" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo editing</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_editing')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="nonresponse" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Nonresponse Weighting Adjustment</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--weighting); border-color: rgba(255,255,255,0.1);">weighting</span>
+            </div>
+            
+            <p class="card-desc">Adjusts initial survey design weights to compensate for nonresponse propensity using response homogeneity groups or propensity scores.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target_col</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Response indicator column (1=Response, 0=Nonresponse).</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">feature_cols</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--feature_cols</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated list of predictor features/covariates.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">design_weight_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--design_weight_col</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Column containing baseline survey design weights.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Propensity adjustment method: 'rhg' (Response Homogeneity Groups) [default] or 'ipw'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">n_groups</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--n_groups</td>
+                <td class="type">Integer</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Number of propensity strata/groups for RHG [default: 5].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">weight_cap</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--weight_cap</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Maximum weight adjustment factor to prevent extreme weight inflation [default: 3.0].</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">nonresponse_weighting/nonresponse_weighting_manual.md</div>
+                    <a href="../nonresponse_weighting/nonresponse_weighting_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/nonresponse_weighting/nonresponse_weighting_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_nonresponse" style="font-family: 'Fira Code', monospace; color: var(--primary);">nonresponse(target_col="is_responder", feature_cols="region,industry", design_weight_col="base_weight")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_nonresponse')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_nonresponse" style="font-family: 'Fira Code', monospace; color: #fff;">run nonresponse --target_col is_responder --feature_cols region,industry --design_weight_col base_weight</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_nonresponse')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_nonresponse" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo nonresponse</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_nonresponse')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="calibration" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Bounded Survey Calibration</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--weighting); border-color: rgba(255,255,255,0.1);">weighting</span>
+            </div>
+            
+            <p class="card-desc">Calibrates survey weights using raking, chi-square, or ML-assisted models to align sample weights with known population totals.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">base_weight_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--base_weight_col</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Baseline weight column to calibrate.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">aux_vars</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--aux_vars</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated auxiliary constraint variables.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">pop_totals</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--pop_totals</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated target population totals (must match auxiliary variable count).</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Calibration algorithm: 'chi-square' [default], 'raking', 'penalized', 'ai_model_calibrated'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">output_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--output_col</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Name of output calibrated weight column [default: final_calibrated_weight].</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">calibration/calibration_manual.md</div>
+                    <a href="../calibration/calibration_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/calibration/calibration_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_calibration" style="font-family: 'Fira Code', monospace; color: var(--primary);">calibration(base_weight_col="base_weight", aux_vars="region", pop_totals="12500")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_calibration')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_calibration" style="font-family: 'Fira Code', monospace; color: #fff;">run calibration --base_weight_col base_weight --aux_vars region --pop_totals 12500</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_calibration')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_calibration" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo calibration</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_calibration')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sampling" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Stratified Random Sampling Draw</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--sampling); border-color: rgba(255,255,255,0.1);">sampling</span>
+            </div>
+            
+            <p class="card-desc">Draws a stratified random sample according to stratum-level sample size allocations and budgets.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">stratum_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--stratum_col</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Stratum identifier column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">n_h</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--n_h</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Stratum sample allocations in key=value format (e.g. 'A=50,B=30').</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">selection_method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--selection_method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Drawing methodology [default: stratified_srs].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">id_col</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--id_col</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Unit unique ID column [default: id].</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">sampling/sampling_manual.md</div>
+                    <a href="../sampling/sampling_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/sampling/sampling_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_sampling" style="font-family: 'Fira Code', monospace; color: var(--primary);">sampling(stratum_col="region", n_h="North=10,South=15")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_sampling')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_sampling" style="font-family: 'Fira Code', monospace; color: #fff;">run sampling --stratum_col region --n_h North=10,South=15</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_sampling')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_sampling" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo sampling</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_sampling')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="influential" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Winsorization & Influential Units</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--estimation); border-color: rgba(255,255,255,0.1);">estimation</span>
+            </div>
+            
+            <p class="card-desc">Detects and treats high-impact influential units using Winsorization or Conditional Bias bounding to reduce sample variance.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated target variables to robustify.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">initial_weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--initial_weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Initial design weight column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">tuning_constant</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--tuning_constant</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Tuning constant for outlier detection [default: 15.0].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">treatment_type</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--treatment_type</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Treatment method: 'WINSORIZATION' [default] or 'CONDITIONAL_BIAS'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">delta_bias</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--delta_bias</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Delta bias threshold [default: 0.05].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">delta_mse</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--delta_mse</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Delta MSE ratio threshold [default: 1.0].</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">group_vars</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--group_vars</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Comma-separated stratum grouping columns.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">influential_units/influential_units_manual.md</div>
+                    <a href="../influential_units/influential_units_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/influential_units/influential_units_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_influential" style="font-family: 'Fira Code', monospace; color: var(--primary);">influential(target="revenue", initial_weight_var="base_weight", treatment_type="WINSORIZATION")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_influential')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_influential" style="font-family: 'Fira Code', monospace; color: #fff;">run influential --target revenue --initial_weight_var base_weight --treatment_type WINSORIZATION</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_influential')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_influential" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo influential</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_influential')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sae" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Small Area Estimation (SAE)</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--estimation); border-color: rgba(255,255,255,0.1);">estimation</span>
+            </div>
+            
+            <p class="card-desc">Executes Small Area Estimation (SAE) models (EBLUP Fay-Herriot or Hierarchical Bayes) to produce robust domain-level estimates from small samples.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Direct survey estimate column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">area_id_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--area_id_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Domain/Area identifier variable.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">variance_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--variance_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Direct estimate variance column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">aux_vars</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--aux_vars</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Comma-separated auxiliary domain covariates.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">n_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--n_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Sample size column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Modeling method: 'eblup' [default] or 'hb'.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">sae/sae_manual.md</div>
+                    <a href="../sae/sae_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/sae/sae_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_sae" style="font-family: 'Fira Code', monospace; color: var(--primary);">sae(target="revenue", area_id_var="county_id", variance_var="base_weight", aux_vars="region")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_sae')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_sae" style="font-family: 'Fira Code', monospace; color: #fff;">run sae --target revenue --area_id_var county_id --variance_var base_weight --aux_vars region</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_sae')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_sae" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo sae</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_sae')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="variance" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Analytical Variance Estimation</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--estimation); border-color: rgba(255,255,255,0.1);">estimation</span>
+            </div>
+            
+            <p class="card-desc">Computes Taylor Series linearized analytical variance estimates and confidence intervals for complex survey designs.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">design_weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--design_weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Initial design weight column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">final_weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--final_weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Final adjusted weight column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">y_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--y_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Target variable of interest.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">design_type</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--design_type</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Sampling design: 'Poisson' [default] or 'SRSWOR'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">param_type</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--param_type</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Statistical parameter: 'Total' [default], 'Mean', 'Ratio', 'Size'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">domain_vars</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--domain_vars</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Comma-separated domain/subgroup columns.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">variance_estimation/variance_estimation_manual.md</div>
+                    <a href="../variance_estimation/variance_estimation_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/variance_estimation/variance_estimation_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_variance" style="font-family: 'Fira Code', monospace; color: var(--primary);">variance(design_weight_var="base_weight", final_weight_var="final_weight", y_var="revenue")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_variance')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_variance" style="font-family: 'Fira Code', monospace; color: #fff;">run variance --design_weight_var base_weight --final_weight_var final_weight --y_var revenue</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_variance')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_variance" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo variance</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_variance')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="seasonal" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Seasonal Adjustment</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--ts); border-color: rgba(255,255,255,0.1);">ts</span>
+            </div>
+            
+            <p class="card-desc">Performs time-series seasonal adjustment and hierarchical reconciliation (X-13 ARIMA equivalent).</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Value column to adjust.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">time_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--time_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Date/time column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">group_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--group_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Optional series grouping column.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">period</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--period</td>
+                <td class="type">Integer</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Seasonal period (12=monthly [default], 4=quarterly).</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">seasonal_adjustment/seasonal_adjustment_manual.md</div>
+                    <a href="../seasonal_adjustment/seasonal_adjustment_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/seasonal_adjustment/seasonal_adjustment_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_seasonal" style="font-family: 'Fira Code', monospace; color: var(--primary);">seasonal(target="revenue", time_var="sale_date", period=12)</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_seasonal')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_seasonal" style="font-family: 'Fira Code', monospace; color: #fff;">run seasonal --target revenue --time_var sale_date --period 12</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_seasonal')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_seasonal" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo seasonal</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_seasonal')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="sdc" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Statistical Disclosure Control (SDC)</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--privacy); border-color: rgba(255,255,255,0.1);">privacy</span>
+            </div>
+            
+            <p class="card-desc">Runs statistical disclosure control (suppression, differential privacy, or synthetic data generation) to protect sensitive respondent information.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Sensitive column to protect.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">method</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--method</td>
+                <td class="type">String</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Protection method: 'suppression' [default], 'differential_privacy', 'synthetic'.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">epsilon</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--epsilon</td>
+                <td class="type">Float</td>
+                <td><span class="badge badge-opt">Optional</span></td>
+                <td>Privacy budget parameter for differential privacy [default: 1.0].</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">disclosure_control/disclosure_control_manual.md</div>
+                    <a href="../disclosure_control/disclosure_control_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/disclosure_control/disclosure_control_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_sdc" style="font-family: 'Fira Code', monospace; color: var(--primary);">sdc(target="revenue", method="differential_privacy", epsilon=0.5)</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_sdc')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_sdc" style="font-family: 'Fira Code', monospace; color: #fff;">run sdc --target revenue --method differential_privacy --epsilon 0.5</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_sdc')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_sdc" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo sdc</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_sdc')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="variance_imputation" class="card module-section" style="margin-bottom: 50px;">
+            <div class="card-header-flex">
+                <div class="card-title-flex">
+                    <h2>Nonresponse Variance Imputation</h2>
+                </div>
+                <span class="card-cat-badge" style="background: var(--imputation); border-color: rgba(255,255,255,0.1);">imputation</span>
+            </div>
+            
+            <p class="card-desc">Estimates and measures the variance inflation component due to missing survey data imputation.</p>
+            
+            <div class="grid-layout">
+                <div>
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Parameters & Options</h3>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>REPL Parameter</th>
+                                <th>CLI Flag</th>
+                                <th>Type</th>
+                                <th>Required</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">target</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--target</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Imputed variable name to analyze.</td>
+            </tr>
+            
+            <tr>
+                <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">initial_weight_var</td>
+                <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--initial_weight_var</td>
+                <td class="type">Column Name</td>
+                <td><span class="badge badge-req">Required</span></td>
+                <td>Survey design weight column.</td>
+            </tr>
+            
+                        </tbody>
+                    </table>
+                </div>
+                
+                <div class="meta-card">
+                    <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary);">Statistical Manual</h3>
+                    <p style="font-size: 0.9rem; color: var(--text-secondary); line-height: 1.6;">
+                        For full algebraic derivations, sample budgets, or validation formulas, view the local manual.
+                    </p>
+                    <div class="path-text">variance_imputation/variance_imputation_manual.md</div>
+                    <a href="../variance_imputation/variance_imputation_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                    <button class="btn btn-outline" onclick="copyPath('C:/Users/mjian/Projects/ai-survey-app/variance_imputation/variance_imputation_manual.md')">📋 Copy Absolute Path</button>
+                </div>
+            </div>
+            
+            <div style="margin-top: 25px;">
+                <h3 style="font-size: 1.1rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-secondary); margin-bottom: 15px;">Runnable Examples</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                        <div class="code-box" id="repl_variance_imputation" style="font-family: 'Fira Code', monospace; color: var(--primary);">variance_imputation(target="revenue", initial_weight_var="base_weight")</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('repl_variance_imputation')">📋 Copy REPL Syntax</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                        <div class="code-box" id="cli_variance_imputation" style="font-family: 'Fira Code', monospace; color: #fff;">run variance_imputation --target revenue --initial_weight_var base_weight</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('cli_variance_imputation')">📋 Copy CLI Command</button>
+                    </div>
+                    <div>
+                        <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                        <div class="code-box" id="demo_variance_imputation" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo variance_imputation</div>
+                        <button class="btn btn-outline" style="width: auto; margin-top: 10px;" onclick="copyExample('demo_variance_imputation')">📋 Copy Demo Command</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+
+        <footer>
+            <p>NovaSurvey Statistical Engine &bull; Copyright (c) 2026 Min Jiang (NovaSurvey Inc.). All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        function copyPath(path) {
+            navigator.clipboard.writeText(path);
+            alert("Absolute manual path copied to clipboard!");
+        }
+        function copyExample(id) {
+            navigator.clipboard.writeText(document.getElementById(id).innerText);
+            alert("Example command copied to clipboard!");
+        }
+    </script>
+</body>
+</html>

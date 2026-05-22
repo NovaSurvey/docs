@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Survey: Developer &amp; Integration Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --text: #c5c6c7;
+            --text-secondary: #999bb0;
+            --primary: #00f0ff;
+            --primary-grad: linear-gradient(135deg, #00f0ff 0%, #7000ff 100%);
+            --border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-hover: rgba(255, 255, 255, 0.04);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.03) 0%, transparent 40%);
+        }
+        .header-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .logo-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        .code-box {
+            background: #050608;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--primary);
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        a:hover {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-panel">
+        <div class="logo-text">Nova Developer API</div>
+        <div class="logo-subtitle">Developer, API, &amp; Programmatic Integration Guide</div>
+    </div>
+    
+    <div class="content-panel">
+        <h1 style="font-size: 2.5rem; margin-top: 40px; margin-bottom: 20px; color: #fff;">NovaSurvey Developer & Integration Guide</h1>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">Programmatic Backend Integration Manual</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">NovaSurvey’s advanced statistical engines are implemented as pure, modular Python packages built on top of high-performance <strong>Polars</strong> dataframes. While they are exposed via the interactive RGui Console and Tkinter interfaces, they can be imported and called programmatically inside any custom Python program, batch job, or pipeline.</p>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">This guide provides concrete code templates and explanations on how to integrate the backend engines into your own analytical programs.</p>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">⚙️ 1. Environment Setup</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">To import NovaSurvey packages programmatically, ensure that your Python script can resolve the project workspace directory. You can add it to the search path programmatically:</p>
+<br>
+<div class="code-box"><pre><code>import os
+import sys
+import polars as pl
+
+# 1. Add the workspace directory to the Python path
+workspace_dir = r"c:\Users\mjian\Projects\ai-survey-app"
+if workspace_dir not in sys.path:
+    sys.path.insert(0, workspace_dir)</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🔍 2. Statistical Module Integration Examples</h2>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">A. Outlier Detection (`editing.outlier`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Performs robust statistical outlier detection (e.g., Hidiroglou-Berthelot, Sigma-Gap, Isolation Forest) and appends boolean flagging columns directly to your dataset.</p>
+<br>
+<div class="code-box"><pre><code>from editing.outlier import run_outlier_detection
+
+# 1. Prepare your dataset
+df = pl.DataFrame({
+    "id": [1, 2, 3, 4, 5],
+    "revenue": [450.0, 520.0, 490.0, 15000.0, 480.0]  # Row 4 is an extreme outlier
+})
+
+# 2. Define the outlier check task
+task = {
+    "variable": "revenue",
+    "method": "hb",              # Hidiroglou-Berthelot
+    "threshold": 3.0,            # Z-score outlier threshold
+    "prev_column": None,         # Optional: previous wave column for ratio outliers
+    "group_var": None,           # Optional: stratum/grouping column
+    "weight_var": None,          # Optional: weight column
+    "critical_threshold": None   # Optional: criticality limit
+}
+
+# 3. Execute outlier detection
+flagged_df = run_outlier_detection(df, [task])
+
+print("Output Columns:", flagged_df.columns)
+# Added columns: 'revenue_FTE' (Flagged for Extreme), 'revenue_FTI' (Flagged for Imputation)
+print(flagged_df.select(["id", "revenue", "revenue_FTE", "revenue_FTI"]))</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">B. High-Performance Imputation Engine (`imputation.engine`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Implements ratio, mean, donor (hot-deck), and machine learning estimators (XGBoost) to impute missing (<code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">null</code>) survey values.</p>
+<br>
+<div class="code-box"><pre><code>from imputation.models import ImputationConfig, EstimatorTask
+from imputation.engine import ImputationEngine
+
+# 1. Prepare your dataset with missing values (None / null)
+df = pl.DataFrame({
+    "id": [1, 2, 3, 4, 5],
+    "revenue": [400.0, None, 450.0, 600.0, None],
+    "sales": [320.0, 390.0, 360.0, 480.0, 310.0]  # Auxiliary variable
+})
+
+# 2. Hardening check: Ensure FTI flag exists (True for rows needing imputation)
+if "revenue_FTI" not in df.columns:
+    df = df.with_columns(pl.col("revenue").is_null().alias("revenue_FTI"))
+
+# 3. Configure the Imputation Task
+task = EstimatorTask(
+    target="revenue",
+    method="ratio",         # Ratio imputation
+    aux=["sales"],          # Auxiliary columns
+    weight_var=None,
+    group_var=None
+)
+
+# 4. Instantiate Configuration
+config = ImputationConfig(
+    estimator_config=[task],
+    imputation_sequence=["estimators"],
+    mi_diagnostic_iterations=0,
+    run_quality_certification=False,
+    persist_results=False
+)
+
+# 5. Run the Imputation Engine
+engine = ImputationEngine(df, config)
+result = engine.run_imputation_module(df)
+
+imputed_df = result.data
+print("Imputed Dataset:")
+print(imputed_df.select(["id", "revenue", "sales", "revenue_FTI"]))</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">C. Bounded Calibration Engine (`calibration.engine`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Adjusts design weights to match auxiliary population totals (raking, chi-square) while maintaining rigorous lower/upper bounds.</p>
+<br>
+<div class="code-box"><pre><code>from calibration.models import CalibrationMetadata, CalibrationGroup, CalibrationConstraints, DatasetConfig
+from calibration.engine import CalibrationEngine
+
+# 1. Prepare survey data with initial weights and auxiliary regions
+df = pl.DataFrame({
+    "id": [1, 2, 3, 4],
+    "base_weight": [10.0, 10.0, 10.0, 10.0],
+    "region": ["North", "North", "South", "South"]
+})
+
+# 2. Setup Bounded Calibration Metadata
+metadata = CalibrationMetadata(
+    dataset_config=DatasetConfig(
+        file_name="custom_pipeline",
+        initial_weight_var="base_weight"
+    ),
+    calibration_groups=[
+        CalibrationGroup(
+            group_id="region_calibration",
+            auxiliary_vars=["region"],
+            population_totals=[1500.0, 1500.0]  # Targets for North and South
+        )
+    ],
+    constraints=CalibrationConstraints(
+        lower_bound_ratio=0.4,
+        upper_bound_ratio=3.0
+    ),
+    method="chi-square",
+    output_weight_col="calibrated_weight",
+    persist_results=False
+)
+
+# 3. Calibrate Weights
+engine = CalibrationEngine(metadata)
+result = engine.calibrate(df)
+
+calibrated_df = result.data
+print("Calibrated Dataset:")
+print(calibrated_df.select(["id", "base_weight", "region", "calibrated_weight"]))</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🔄 3. Building an End-to-End Pipeline</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Because every backend module consumes a <strong>Polars DataFrame</strong> and returns a modified <strong>Polars DataFrame</strong>, you can cleanly chain these operations into a unified analytical pipeline:</p>
+<br>
+<div class="code-box"><pre><code>import polars as pl
+from editing.outlier import run_outlier_detection
+from imputation.models import ImputationConfig, EstimatorTask
+from imputation.engine import ImputationEngine
+
+def process_survey_data(filepath: str) -&gt; pl.DataFrame:
+    # 1. Ingest
+    df = pl.read_parquet(filepath) if filepath.endswith(".parquet") else pl.read_csv(filepath)
+    
+    # 2. Flag Outliers
+    outlier_task = {
+        "variable": "revenue",
+        "method": "hb",
+        "threshold": 3.0,
+        "prev_column": None,
+        "group_var": None,
+        "weight_var": None,
+        "critical_threshold": None
+    }
+    df = run_outlier_detection(df, [outlier_task])
+    
+    # 3. Impute Flagged Cells
+    impute_task = EstimatorTask(
+        target="revenue",
+        method="ratio",
+        aux=["sales"],
+        weight_var=None,
+        group_var=None
+    )
+    config = ImputationConfig(
+        estimator_config=[impute_task],
+        imputation_sequence=["estimators"],
+        mi_diagnostic_iterations=0,
+        run_quality_certification=False,
+        persist_results=False
+    )
+    engine = ImputationEngine(df, config)
+    result = engine.run_imputation_module(df)
+    
+    return result.data
+
+if __name__ == "__main__":
+    processed_df = process_survey_data("comprehensive_sample.parquet")
+    print("Pipeline Processing Complete!")
+    print(processed_df.head())</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">💻 4. Programmatic Automation via Compiled Binary (`nova_console.exe`)</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">If you are distributing your application as compiled executables and <strong>your users do not have access to the raw Python source code or packages</strong>, they can still completely automate and script the analytical pipelines!</p>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Both the GUI and CLI configurations generate a standalone command-line executable: <strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">dist/nova_console.exe</code></strong>. This console binary supports fully headless standard input (<code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">stdin</code>) piping and standard output (<code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">stdout</code>) redirection. Developers can drive the compiled engines programmatically in any language of their choice!</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">A. Terminal Batch Redirection (Standard Pipes)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">You can write a simple text file (<code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">commands.txt</code>) listing the console actions to take, and pipe it directly into <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_console.exe</code> using standard shell redirection:</p>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;"><strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">commands.txt</code></strong>:</p>
+<div class="code-box"><pre><code>load my_dataset.parquet
+run outliers --target revenue --method hb --threshold 2.5
+run imputation --target revenue --method ratio --aux sales
+export processed_dataset.parquet
+exit</code></pre></div>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;"><strong>Run in Terminal (Command Prompt / PowerShell / Bash)</strong>:</p>
+<div class="code-box"><pre><code>dist/nova_console.exe &lt; commands.txt</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">B. Programmatic Calling in Python (via Subprocesses)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">You can spawn the compiled <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_console.exe</code> binary as a child subprocess, write commands dynamically to its input stream, and capture the stdout response programmatically:</p>
+<br>
+<div class="code-box"><pre><code>import subprocess
+
+def run_compiled_pipeline():
+    # 1. Start the compiled CLI console as a subprocess
+    process = subprocess.Popen(
+        ["dist/nova_console.exe"],
+        stdin=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        text=True,
+        bufsize=1
+    )
+    
+    # 2. Send commands to stdin line by line
+    commands = [
+        "load comprehensive_sample.parquet",
+        "run outliers --target revenue --method hb --threshold 2.5",
+        "run imputation --target revenue --method ratio --aux sales",
+        "export processed_sample.parquet",
+        "exit"
+    ]
+    
+    for cmd in commands:
+        process.stdin.write(cmd + "\n")
+    
+    process.stdin.flush()
+    
+    # 3. Capture and print console log outputs
+    stdout, stderr = process.communicate()
+    print("=== Subprocess Outputs ===")
+    print(stdout)
+
+if __name__ == "__main__":
+    run_compiled_pipeline()</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">C. Programmatic Calling in R (via `system2`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">If your data analysts or statistician users work exclusively in <strong>R</strong>, they can call the compiled console binary natively:</p>
+<br>
+<div class="code-box"><pre><code>run_compiled_pipeline &lt;- function() {
+  # 1. Define command sequence
+  commands &lt;- c(
+    "load comprehensive_sample.parquet",
+    "run outliers --target revenue --method hb --threshold 2.5",
+    "run imputation --target revenue --method ratio --aux sales",
+    "export processed_sample.parquet",
+    "exit"
+  )
+  
+  # 2. Execute compiled binary passing commands via input stream
+  output &lt;- system2(
+    command = "dist/nova_console.exe",
+    input = commands,
+    stdout = TRUE,
+    stderr = TRUE
+  )
+  
+  # 3. Print output logs
+  cat("=== R Subprocess Outputs ===\n")
+  cat(paste(output, collapse = "\n"))
+}
+
+run_compiled_pipeline()</code></pre></div>
+<br>
+<br>
+
+    </div>
+    
+    <footer>
+        <p>NovaSurvey Statistical Engine &bull; Programmatic developer guide.</p>
+    </footer>
+</body>
+</html>

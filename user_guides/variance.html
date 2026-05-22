@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analytical Variance Estimation - Help Manual</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --surface: rgba(255, 255, 255, 0.03);
+            --border: rgba(255, 255, 255, 0.08);
+            --primary: #00f0ff;
+            --primary-grad: linear-gradient(135deg, #00f0ff 0%, #7000ff 100%);
+            --accent: #ff007f;
+            --text: #f5f6fa;
+            --text-secondary: #8f92a1;
+            --success: #00ff66;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 40px 20px;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.05) 0%, transparent 40%);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        .logo {
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            letter-spacing: -1px;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.2);
+        }
+        .description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        @media (max-width: 800px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+            transition: all 0.3s ease;
+        }
+        .card:hover {
+            border-color: rgba(0, 240, 255, 0.2);
+            box-shadow: 0 12px 40px rgba(0, 240, 255, 0.08);
+        }
+        h2 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #fff;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid var(--border);
+        }
+        th {
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        td {
+            font-size: 0.95rem;
+        }
+        .badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+        .badge-req {
+            background: rgba(255, 0, 127, 0.15);
+            color: var(--accent);
+            border: 1px solid rgba(255, 0, 127, 0.3);
+        }
+        .badge-opt {
+            background: rgba(255, 255, 255, 0.05);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+        }
+        .flag {
+            font-family: 'Fira Code', monospace;
+            color: var(--primary);
+            font-weight: 500;
+        }
+        .type {
+            font-family: 'Fira Code', monospace;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+        .manual-card {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .path-text {
+            font-family: 'Fira Code', monospace;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.3);
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            word-break: break-all;
+        }
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: 10px;
+            background: var(--primary-grad);
+            color: #fff;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 15px rgba(0, 240, 255, 0.2);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 240, 255, 0.4);
+        }
+        .btn-outline {
+            background: transparent;
+            color: var(--text);
+            border: 1px solid var(--border);
+            box-shadow: none;
+        }
+        .btn-outline:hover {
+            background: rgba(255,255,255,0.05);
+            border-color: rgba(255,255,255,0.15);
+            box-shadow: none;
+        }
+        .code-title {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            background: rgba(0,0,0,0.2);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
+            border-bottom: 1px solid var(--border);
+            font-weight: 600;
+        }
+        .code-box {
+            background: #050508;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--primary);
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 12px;
+        }
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">NovaSurvey Shell</div>
+            <h1>Analytical Variance Estimation</h1>
+            <p class="description">Computes Taylor Series linearized analytical variance estimates and confidence intervals for complex survey designs.</p>
+        </header>
+
+        <div class="grid">
+            <div class="card">
+                <h2>Parameters & Options</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>REPL Parameter</th>
+                            <th>CLI Flag</th>
+                            <th>Type</th>
+                            <th>Required</th>
+                            <th>Description</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">design_weight_var</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--design_weight_var</td>
+            <td class="type">Column Name</td>
+            <td><span class="badge badge-req">Required</span></td>
+            <td>Initial design weight column.</td>
+        </tr>
+        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">final_weight_var</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--final_weight_var</td>
+            <td class="type">Column Name</td>
+            <td><span class="badge badge-req">Required</span></td>
+            <td>Final adjusted weight column.</td>
+        </tr>
+        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">y_var</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--y_var</td>
+            <td class="type">Column Name</td>
+            <td><span class="badge badge-req">Required</span></td>
+            <td>Target variable of interest.</td>
+        </tr>
+        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">design_type</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--design_type</td>
+            <td class="type">String</td>
+            <td><span class="badge badge-opt">Optional</span></td>
+            <td>Sampling design: 'Poisson' [default] or 'SRSWOR'.</td>
+        </tr>
+        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">param_type</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--param_type</td>
+            <td class="type">String</td>
+            <td><span class="badge badge-opt">Optional</span></td>
+            <td>Statistical parameter: 'Total' [default], 'Mean', 'Ratio', 'Size'.</td>
+        </tr>
+        
+        <tr>
+            <td class="flag" style="color: var(--primary); font-family: 'Fira Code', monospace; font-size: 0.9rem;">domain_vars</td>
+            <td class="flag" style="font-family: 'Fira Code', monospace; font-size: 0.9rem; color: var(--text-secondary);">--domain_vars</td>
+            <td class="type">String</td>
+            <td><span class="badge badge-opt">Optional</span></td>
+            <td>Comma-separated domain/subgroup columns.</td>
+        </tr>
+        
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card manual-card">
+                <h2>Statistical Manual</h2>
+                <p style="font-size: 0.95rem; color: var(--text-secondary);">
+                    For complete functional descriptions, mathematical derivations (Fellegi-Holt, winsorization, EBLUP equations), and formal validation parameters, consult the local statistical manual.
+                </p>
+                <div class="path-text">variance_estimation/variance_estimation_manual.md</div>
+                <a href="../variance_estimation/variance_estimation_manual.md" class="btn" target="_blank">📘 Open Markdown Manual</a>
+                <button class="btn btn-outline" onclick="copyPath()">📋 Copy Absolute Path</button>
+            </div>
+        </div>
+
+        <div class="card" style="margin-bottom: 40px;">
+            <h2>Runnable Examples</h2>
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                <div>
+                    <div class="code-title" style="background: linear-gradient(135deg, rgba(0,240,255,0.1) 0%, transparent 100%);">Interactive GUI Console (Python/R Syntax)</div>
+                    <div class="code-box" id="replExample" style="font-family: 'Fira Code', monospace; color: var(--primary);">variance(design_weight_var="base_weight", final_weight_var="final_weight", y_var="revenue")</div>
+                    <button class="btn btn-outline" style="width: auto;" onclick="copyReplExample()">📋 Copy REPL Syntax</button>
+                </div>
+                <div>
+                    <div class="code-title" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, transparent 100%);">Batch Pipeline CLI Command</div>
+                    <div class="code-box" id="cliExample" style="font-family: 'Fira Code', monospace; color: #fff;">run variance --design_weight_var base_weight --final_weight_var final_weight --y_var revenue</div>
+                    <button class="btn btn-outline" style="width: auto;" onclick="copyCliExample()">📋 Copy CLI Command</button>
+                </div>
+                <div>
+                    <div class="code-title" style="background: linear-gradient(135deg, rgba(255,0,127,0.1) 0%, transparent 100%);">Zero-Loading Demo Command (Run Instantly!)</div>
+                    <div class="code-box" id="demoExample" style="font-family: 'Fira Code', monospace; color: var(--accent); font-weight: bold;">demo variance</div>
+                    <button class="btn btn-outline" style="width: auto;" onclick="copyDemoExample()">📋 Copy Demo Command</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>NovaSurvey Statistical Engine &bull; <a href="../README.md">Home Documentation</a></p>
+        </footer>
+    </div>
+
+    <script>
+        function copyPath() {
+            navigator.clipboard.writeText("C:/Users/mjian/Projects/ai-survey-app/variance_estimation/variance_estimation_manual.md");
+            alert("Absolute path copied to clipboard!");
+        }
+        function copyReplExample() {
+            navigator.clipboard.writeText(document.getElementById("replExample").innerText);
+            alert("REPL syntax copied to clipboard!");
+        }
+        function copyCliExample() {
+            navigator.clipboard.writeText(document.getElementById("cliExample").innerText);
+            alert("CLI command copied to clipboard!");
+        }
+        function copyDemoExample() {
+            navigator.clipboard.writeText(document.getElementById("demoExample").innerText);
+            alert("Demo command copied to clipboard!");
+        }
+    </script>
+</body>
+</html>

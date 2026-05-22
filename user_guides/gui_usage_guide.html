@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova GUI: Interactive Usage Guide</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #0b0c10;
+            --text: #c5c6c7;
+            --text-secondary: #999bb0;
+            --primary: #00f0ff;
+            --primary-grad: linear-gradient(135deg, #00f0ff 0%, #7000ff 100%);
+            --border: rgba(255, 255, 255, 0.08);
+            --card-bg: rgba(255, 255, 255, 0.02);
+            --card-hover: rgba(255, 255, 255, 0.04);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Outfit', sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            padding: 50px;
+            max-width: 1000px;
+            margin: 0 auto;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(0, 240, 255, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 90% 80%, rgba(112, 0, 255, 0.03) 0%, transparent 40%);
+        }
+        .header-panel {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 50px;
+            backdrop-filter: blur(10px);
+        }
+        .logo-text {
+            font-size: 2.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            background: var(--primary-grad);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 10px;
+        }
+        .logo-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+        .code-box {
+            background: #050608;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 0.95rem;
+            color: var(--primary);
+            position: relative;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            margin-top: 10px;
+        }
+        pre {
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        code {
+            font-family: 'Fira Code', monospace;
+        }
+        footer {
+            text-align: center;
+            margin-top: 80px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            border-top: 1px solid var(--border);
+            padding-top: 40px;
+        }
+        a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+        a:hover {
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.4);
+        }
+    </style>
+</head>
+<body>
+    <div class="header-panel">
+        <div class="logo-text">Nova Console</div>
+        <div class="logo-subtitle">Interactive GUI &amp; Python REPL Usage Guide</div>
+    </div>
+    
+    <div class="content-panel">
+        <h1 style="font-size: 2.5rem; margin-top: 40px; margin-bottom: 20px; color: #fff;">Nova GUI Standalone Executable: Usage & Command Guide</h1>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">This guide outlines exactly how to launch, operate, and execute high-stakes statistical commands inside the standalone <strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_gui.exe</code></strong> desktop console application.</p>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🚀 1. How to Launch and Operate Nova GUI</h2>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Launch the Desktop Application**:</li>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">   Double-click the compiled binary at:</p>
+<div class="code-box"><pre><code>   .\dist\nova_gui.exe</code></pre></div>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">   *Note: Because it is packaged in <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">--noconsole</code> mode, it will open the clean "Nova Console" window directly without showing a background command prompt.*</p>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Load the Sample Dataset**:</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Go to the top menu bar and select **File -> Load File/Data** (or *Load Workspace*).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Open the prepared pipeline sample dataset at `examples/data/input/prod_input.parquet` (or any other CSV/Parquet file in the workspace).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">You will see a success confirmation print directly inside the monospace area:</li>
+<div class="code-box"><pre><code>     [Success] Loaded workspace dataset: 'prod_input.parquet'
+               Shape: 100 rows, 7 columns</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Explore Monospace Interface Controls**:</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Type commands directly at the **`> `** prompt.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Feel free to test the built-in RGui keyboard bounds: try backspacing past the active line or clicking other cells to edit past outputs. The boundary lock will seamlessly snap the focus back to the input block.</li>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Verify Dynamic HTML Help**:</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Navigate to **Packages -> Module Documentation** and click **Outliers** or **Imputation**.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">It will instantly open a styled, responsive, R-like documentation page in your default browser containing mathematical formulas, options, and copy-pasteable execution examples!</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">Go to **Help -> Master User Guide** to open the global dashboard.</li>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">📊 2. Synthetic Dataset Reference Schema</h2>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">To execute the statistical module commands below, make sure you have loaded a standard survey dataset like <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">examples/data/input/prod_input.parquet</code> (which has 100 rows). It contains the following columns:</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`id` : Unique integer key (e.g. `0` to `99`).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`area` : Grouping/Stratum variable (e.g. `Area_0` to `Area_9`).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`part1` : Auxiliary numeric column.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`part2` : Secondary numeric column (contains some missing values `None`).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`total` : Survey total column (contains some edit errors: `part1 + part2 != total`).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`revenue` : Main numeric target column (contains some outliers).</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`initial_weight` : Design/initial sample weights.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`psi` : Direct area variance estimate column.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">`pi_k` : Direct sampling probability column.</li>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🛠️ 3. Natural Python/R Function Syntax & CLI Commands [NEW]</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">You can execute commands inside <strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_gui.exe</code></strong> using either <strong>natural programming function syntax</strong> (exactly like R or Python) or standard CLI commands! Both positional arguments and keyword arguments are fully supported!</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">Syntax Rules:</h3>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Unquoted Column Names**: You can specify columns without quotes, e.g. `outliers(revenue)` instead of `outliers("revenue")`.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Positional Arguments**: Maps parameters naturally by their order, e.g., `outliers(revenue, hb, 3.5)` maps to `--target revenue`, `--method hb`, and `--threshold 3.5`.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Keyword Arguments**: Override or explicitly define parameters by name, e.g., `outliers(revenue, method="hb", threshold=3.5)`.</li>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Below are the examples of <strong>both</strong> natural function calls and CLI commands for each module:</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">1. Outliers (`outliers`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Detects anomalous survey entries in <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">revenue</code> using Huber's robust method.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  outliers(revenue, method="hb", threshold=3.0)</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run outliers --target revenue --method hb --threshold 3.0</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">2. Imputation (`imputation`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Imputes missing values in <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">part2</code> using a ratio estimator assisted by auxiliary variable <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">part1</code>.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  imputation(part2, part1, method="ratio")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run imputation --target part2 --aux part1 --method ratio</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">3. Editing & Recalculation (`editing`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Validates that <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">total = part1 + part2</code> and automatically corrects errors using a balance/recalculation rule.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  editing(vars="part1,part2,total", edits="total = part1 + part2")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run editing --vars part1,part2,total --edits "total = part1 + part2"</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">4. Nonresponse Weighting (`nonresponse`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Adjusts initial survey weights based on response probabilities to counter nonresponse bias.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  nonresponse(revenue, initial_weight, response_var="id")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run nonresponse --target revenue --weight_var initial_weight --response_var id</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">5. Calibration Weighting (`calibration`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Calibrates sample weights so estimated sums align perfectly with known population benchmarks.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  calibration(revenue, initial_weight, pop_total=100000.0)</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run calibration --target revenue --weight_var initial_weight --pop_total 100000.0</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">6. Sampling Design Analysis (`sampling`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Analyzes stratified sampling allocations, expansion estimators, and sample coverage across areas.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  sampling(revenue, initial_weight, stratum="area")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run sampling --target revenue --weight_var initial_weight --stratum area</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">7. Influential Units (`influential`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Flags high-impact outlier units that excessively skew target estimators (e.g. using the AY method).</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  influential(revenue, initial_weight, group_var="area")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run influential --target revenue --weight_var initial_weight --group_var area</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">8. Small Area Estimation (`sae`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Applies Fay-Herriot EBLUP modeling to stabilize area-level estimates with small sample sizes.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  sae(direct_est, variance_var="psi", area_var="area", aux_vars="part1")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run sae --target direct_est --variance_var psi --area_var area --aux_vars part1</code></pre></div>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">*(Note: requires loading a direct-estimator dataset like <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">pipeline_output.parquet</code> which contains <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">direct_est</code> and <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">psi</code>).*</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">9. Variance Estimation (`variance`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Estimates precision metrics (standard errors and CVs) under complex sampling designs (e.g. Poisson).</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  variance(revenue, initial_weight, stratum="area")</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run variance --target revenue --weight_var initial_weight --stratum area</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">10. Seasonal Adjustment (`seasonal`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Decomposes target time series into seasonal, trend, and irregular components (STL/ARIMA-ready).</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  seasonal(revenue)</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run seasonal --target revenue</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">11. Statistical Disclosure Control (`sdc`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Protects respondent confidentiality by applying primary suppression and adding differential privacy noise.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  sdc(revenue, area_var="area", n_threshold=3)</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run sdc --target revenue --area_var area --n_threshold 3</code></pre></div>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">12. Variance Imputation (`variance_imputation`)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Calculates the extra variance contribution introduced by imputing missing values.</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Natural R/Python call**:</li>
+<div class="code-box"><pre><code>  variance_imputation(revenue, initial_weight)</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**CLI syntax**:</li>
+<div class="code-box"><pre><code>  run variance_imputation --target revenue --weight_var initial_weight</code></pre></div>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🔄 4. Running a Full Pipeline</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">You can run the entire 12-module high-performance statistical pipeline sequentially using the dedicated command line runner or Python test suite:</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">Option A: Run via Python Integration Script (Recommended)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Launch the end-to-end integration test which generates synthetic production data, feeds it through all 12 modules via the <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">PipelineManager</code>, writes a combined output file <code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">prod_output.parquet</code>, and creates a full QA report:</p>
+<div class="code-box"><pre><code>python run_full_pipeline.py</code></pre></div>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Upon completion, the pipeline outputs:</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Output Parquet**: `examples/data/output/prod_output.parquet`</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Full QA Audit & Quality Report**: `examples/data/output/prod_output_qa_report.json`</li>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">Option B: Run Batch CLI (Fast Verification)</h3>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">To trigger the entire statistical pipeline inside the command shell directly:</p>
+<div class="code-box"><pre><code>python run_banff_pipeline.py</code></pre></div>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">This executes the core BANFF editing, outlier detection, and imputation pipeline, producing a certified, audited output Parquet frame in seconds!</p>
+<br>
+<hr class="section-divider" style="margin: 40px 0; border: none; border-top: 1px solid var(--border);">
+<br>
+<h2 style="font-size: 1.8rem; margin-top: 35px; margin-bottom: 15px; color: #fff; border-bottom: 1px solid var(--border); padding-bottom: 10px;">🐍 5. Running Arbitrary Python Code (Interactive REPL)</h2>
+<br>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">Both the windowed <strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_gui.exe</code></strong> console and <strong><code style="color: var(--primary); background: rgba(0, 240, 255, 0.05); padding: 2px 6px; border-radius: 4px; font-family: monospace;">nova_console.exe</code></strong> now act as a <strong>fully functional, interactive Python REPL</strong>! Any entered command that is not a pre-defined statistical command is compiled and executed dynamically inside a persistent, sandbox-safe local Python context.</p>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">Features:</h3>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Bidirectional Dataset Synchronization**: The active Polars DataFrame is automatically exposed inside your Python scope as the variable **`df`**. If you modify `df` in Python, the active workspace state updates instantly!</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Pre-imported Modules**: Common high-performance libraries are pre-imported for you:</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**`pl`** : Polars</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**`np`** : NumPy</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**`pd`** : Pandas (if installed)</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">**Persistent Local Context**: Variables, custom functions, and classes you define remain in scope across inputs.</li>
+<br>
+<h3 style="font-size: 1.3rem; margin-top: 25px; margin-bottom: 10px; color: var(--primary);">Premium Examples to Try:</h3>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Basic Math Calculations**:</li>
+<div class="code-box"><pre><code>  &gt; 100 * 45 / 3.14
+  1433.1210191082802</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Inspect the Active Polars Dataset**:</li>
+<div class="code-box"><pre><code>  &gt; df.shape
+  (100, 7)</code></pre></div>
+<div class="code-box"><pre><code>  &gt; df.columns
+  ['id', 'area', 'part1', 'part2', 'total', 'revenue', 'initial_weight']</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Execute High-speed Polars Queries**:</li>
+<div class="code-box"><pre><code>  &gt; df.filter(pl.col("revenue") &gt; 500)</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Define Persistent Variables**:</li>
+<div class="code-box"><pre><code>  &gt; scale_factor = 2.5
+  &gt; scale_factor * df.height
+  250.0</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Run Standard Python Scripting**:</li>
+<div class="code-box"><pre><code>  &gt; import math
+  &gt; math.sqrt(64)
+  8.0</code></pre></div>
+<br>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary);">**Install and Import External Python Packages**:</li>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">  Since our application has a dedicated <strong>workspace package extension injection system</strong>, you can install any Python library locally into the workspace, and it will be immediately available inside the GUI!</p>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">Open your terminal in the workspace directory.</li>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">Run the pip installation targeting the local `packages/` folder:</li>
+<div class="code-box"><pre><code>     pip install --target .\packages requests</code></pre></div>
+<li style="margin-left: 20px; margin-bottom: 8px; color: var(--text-secondary); list-style-type: decimal;">Inside the `nova_gui.exe` console, import it directly:</li>
+<div class="code-box"><pre><code>     &gt; import requests
+     &gt; r = requests.get("https://api.github.com")
+     &gt; r.status_code
+     200</code></pre></div>
+<p style="color: var(--text-secondary); margin-bottom: 15px; font-size: 1.05rem;">  Any third-party analytical, plotting, or utility library can be dynamically installed and loaded at runtime without needing to recompile the binary!</p>
+<br>
+
+    </div>
+    
+    <footer>
+        <p>NovaSurvey Statistical Engine &bull; Interactive desktop console instructions.</p>
+    </footer>
+</body>
+</html>
