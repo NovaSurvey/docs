@@ -1,11 +1,167 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Documentation</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>NovaSurvey</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      background: #0b1220;
+      color: #e6e6e6;
+      line-height: 1.6;
+    }
+
+    header {
+      padding: 80px 20px;
+      text-align: center;
+      background: linear-gradient(135deg, #1f3b73, #0b1220);
+    }
+
+    header h1 {
+      font-size: 48px;
+      margin: 0;
+    }
+
+    header p {
+      font-size: 18px;
+      opacity: 0.9;
+      max-width: 700px;
+      margin: 20px auto;
+    }
+
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 20px;
+      background: #4da3ff;
+      color: #000;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    section {
+      max-width: 900px;
+      margin: auto;
+      padding: 60px 20px;
+    }
+
+    h2 {
+      color: #4da3ff;
+      margin-bottom: 10px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      margin-top: 20px;
+    }
+
+    .card {
+      background: #121a2b;
+      padding: 20px;
+      border-radius: 12px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      opacity: 0.6;
+    }
+
+    code {
+      background: #1b263b;
+      padding: 2px 6px;
+      border-radius: 5px;
+    }
+  </style>
 </head>
+
 <body>
-    <h1>Welcome to NovaSurvey Documentation</h1>
+
+<header>
+  <h1>NovaSurvey</h1>
+  <p>
+    A modern statistical survey engine that automates weighting, imputation, variance estimation,
+    and survey analytics—so you don’t need to understand the math behind it.
+  </p>
+  <a class="btn" href="https://github.com/NovaSurvey/docs">View on GitHub</a>
+</header>
+
+<section>
+  <h2>What is NovaSurvey?</h2>
+  <p>
+    NovaSurvey is a survey analytics platform designed for accessibility. It transforms raw survey data
+    into reliable statistical outputs without requiring deep knowledge of survey methodology.
+  </p>
+</section>
+
+<section>
+  <h2>What You Can Do</h2>
+
+  <div class="grid">
+    <div class="card">📊 Run surveys without statistical expertise</div>
+    <div class="card">🧹 Clean and repair messy datasets automatically</div>
+    <div class="card">⚖️ Generate weighted population estimates</div>
+    <div class="card">📈 Compute uncertainty and variance</div>
+    <div class="card">🧠 Handle small or sparse datasets</div>
+    <div class="card">🔐 Protect sensitive information (SDC)</div>
+  </div>
+</section>
+
+<section>
+  <h2>How It Works</h2>
+  <p>
+    1. Create a survey project<br/>
+    2. Import data (CSV / API / database)<br/>
+    3. Run analysis<br/>
+    4. Export clean results, estimates, and reports
+  </p>
+</section>
+
+<section>
+  <h2>Core Engine</h2>
+  <div class="grid">
+    <div class="card">Sampling & Data Editing</div>
+    <div class="card">Imputation Engine</div>
+    <div class="card">Calibration & Weighting</div>
+    <div class="card">Variance Estimation</div>
+    <div class="card">Small Area Estimation</div>
+    <div class="card">Statistical Disclosure Control</div>
+  </div>
+</section>
+
+<section>
+  <h2>Designed For</h2>
+  <p>
+    Data analysts, researchers, policy teams, students, and applied data science workflows.
+    No prior survey methodology knowledge required.
+  </p>
+</section>
+
+<section>
+  <h2>Philosophy</h2>
+  <p>
+    <i>
+      “Statistical complexity should not block access to insights.”
+    </i>
+  </p>
+</section>
+
+<section>
+  <h2>Get Started</h2>
+  <p>
+    Visit the documentation or clone the repository to try NovaSurvey locally.
+  </p>
+  <a class="btn" href="https://github.com/NovaSurvey/docs">Open Documentation</a>
+</section>
+
+<footer>
+  NovaSurvey • Open Source Statistical Engine
+</footer>
+
 </body>
 </html>
