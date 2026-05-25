@@ -1,80 +1,94 @@
-# Module Documentation: variance_estimation
+# Module Documentation: Variance Estimation
 
-## 1. Module Overview: variance_estimation
-
+## 1. Module Overview
 The `variance_estimation` module is a high-performance statistical engine designed to calculate point estimates and their associated sampling variances for complex survey designs. It supports both **Analytical Variance Estimation** (via Taylor Linearization) and **Empirical Variance Estimation** (via Bootstrap). The module is specifically hardened for official statistics production, supporting calibration adjustments (GREG estimation), multi-phase sampling, and domain-level reporting for totals, means, and ratios.
 
+## 2. Table of Contents
+- [3. Core Orchestration](#3-core-orchestration)
+  - [VarianceEngine](#varianceengine)
+  - [calculate_variance](#calculate_variance)
+  - [_calculate_bootstrap_variance](#_calculate_bootstrap_variance)
+- [4. Precision Analytics](#4-precision-analytics)
+  - [calculate_precision_metrics](#calculate_precision_metrics)
+
 ---
 
-## 2. Core Classes & Initialization
+## 3. Core Orchestration
 
 ### VarianceEngine
-> The primary execution engine for variance and point estimation.
 
-**Initialization:** `VarianceEngine(metadata: VarianceMetadata)`
-- **metadata**: A `VarianceMetadata` object defining variables, design parameters, and estimation requests.
+#### Description
+The primary execution engine for variance and point estimation.
 
-### VarianceMetadata
-> Configuration container for the estimation task.
+#### Usage
+`VarianceEngine(metadata)`
 
-**Parameters:**
-- **final_weight_var**: The calibrated weight column ($w_k$).
-- **design_weight_var**: The initial design weight column ($d_k$).
-- **domain_vars**: List of columns defining population sub-domains.
-- **parameters**: List of `ParameterRequest` objects (Size, Total, Mean, Ratio).
-- **design_config**: A `VarianceDesignConfig` defining the survey design (SRSWOR, Poisson, or Two-Phase).
+#### Arguments
+| Argument | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `metadata` | `VarianceMetadata` | REQUIRED | A configuration object defining variables, design parameters, and estimation requests. |
+
+#### Details
+Initializes the estimation context. `VarianceMetadata` specifies `final_weight_var`, `design_weight_var`, `domain_vars`, `parameters` (Size, Total, Mean, Ratio), and the `design_config` (SRSWOR, Poisson).
+
+#### Value
+Initialized `VarianceEngine`.
+
+#### References
+N/A
+
+#### Examples
+```python
+# See calculate_variance() examples below.
+```
 
 ---
 
-## 3. Core Methods & Functions
+### calculate_variance (VarianceEngine)
 
-### VarianceEngine.calculate_variance(df)
-Dispatches the estimation request to the analytical or bootstrap handler based on the `variance_method` configuration.
-- **Returns**: Polars DataFrame containing Estimate, Variance, Standard Error, and CV% per domain.
+#### Description
+Dispatches the estimation request to the analytical or bootstrap handler based on the configuration.
 
-### VarianceEngine._calculate_bootstrap_variance(df) (Internal)
-Calculates variance by computing point estimates across multiple replicate weight columns and taking their empirical variance.
+#### Usage
+`engine.calculate_variance(df)`
 
----
+#### Arguments
+| Argument | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `df` | `pl.DataFrame` | REQUIRED | The input sampling frame with weights and response variables. |
 
-## 4. Details (Methodology & Mathematics)
-
-### Taylor Linearization ($u_k$)
+#### Details
+**Taylor Linearization ($u_k$)**
 For non-linear parameters, the module computes linearized variables ($u_k$) such that the variance of the non-linear estimator $\hat{\theta}$ is approximately the variance of the total of $u_k$.
 - **Total**: $u_k = y_k$
 - **Mean**: $u_k = \frac{1}{\hat{N}} (y_k - \hat{\bar{Y}})$
 - **Ratio**: $u_k = \frac{1}{\hat{Y}_2} (y_{1k} - \hat{R} y_{2k})$
 
-### Calibration Residual Engine ($e_k$)
+**Calibration Residual Engine ($e_k$)**
 If the weights are calibrated, the variance is calculated using residuals to account for the reduction in variance provided by auxiliary information $x_k$:
 $$e_k = u_k - x_k^T \beta$$
 Where the regression vector $\beta$ is estimated using weighted least squares (or pseudo-inverse for robustness):
 $$\beta = (X^T W X)^{-1} X^T W u, \quad W = \text{diag}(d_k / c_k)$$
 The final variance is computed on the term $g_k e_k$, where $g_k = w_k / d_k$ is the calibration factor.
 
-### Sampling Design Variances
+**Sampling Design Variances**
 1.  **Stratified SRSWOR**:
     $$\hat{V}(\hat{Y}) = \sum_{h} N_h^2 \left(1 - \frac{n_h}{N_h}\right) \frac{s_h^2}{n_h}$$
     where $s_h^2$ is the sample variance of $g_k e_k$ within stratum $h$.
 2.  **Poisson Sampling**:
     $$\hat{V}(\hat{Y}) = \sum_{k \in s} d_k (d_k - 1) (g_k e_k)^2$$
 
----
+#### Value
+Polars DataFrame containing Estimate, Variance, Standard Error, and CV% per domain.
 
-## 5. References
+#### References
+- Särndal, C.-E., Swensson, B., & Wretman, J. (1992). *Model Assisted Survey Sampling*. Springer.
+- Deville, J.-C., & Särndal, C.-E. (1992). Calibration Estimators in Survey Sampling. *Journal of the American Statistical Association*, 87(418), 376-382.
+- Wolter, K. M. (2007). *Introduction to Variance Estimation*. Second Edition. Springer.
 
-Särndal, C.-E., Swensson, B., & Wretman, J. (1992). *Model Assisted Survey Sampling*. Springer.
-
-Deville, J.-C., & Särndal, C.-E. (1992). Calibration Estimators in Survey Sampling. *Journal of the American Statistical Association*, 87(418), 376-382.
-
-Wolter, K. M. (2007). *Introduction to Variance Estimation*. Second Edition. Springer.
-
----
-
-## 6. Runnable Examples
-
-### Example 1: Stratified SRSWOR Variance
+#### Examples
 ```python
+# Example 1: Stratified SRSWOR Variance
 import polars as pl
 from variance_estimation.engine import VarianceEngine
 from variance_estimation.models import VarianceMetadata, ParameterRequest, VarianceDesignConfig
@@ -104,8 +118,8 @@ results = engine.calculate_variance(df)
 print(results.select(["Parameter", "Estimate", "Standard_Error", "CV_Percent"]))
 ```
 
-### Example 2: Calibrated GREG Variance (Residuals)
 ```python
+# Example 2: Calibrated GREG Variance (Residuals)
 import polars as pl
 from variance_estimation.engine import VarianceEngine
 from variance_estimation.models import VarianceMetadata, ParameterRequest, VarianceDesignConfig
@@ -135,8 +149,8 @@ results = engine.calculate_variance(df)
 print(results.select(["Parameter", "Estimate", "Standard_Error"]))
 ```
 
-### Example 3: Ratio Estimation (Analytical Taylor)
 ```python
+# Example 3: Ratio Estimation (Analytical Taylor)
 import polars as pl
 from variance_estimation.engine import VarianceEngine
 from variance_estimation.models import VarianceMetadata, ParameterRequest, VarianceDesignConfig
@@ -161,8 +175,33 @@ results = engine.calculate_variance(df)
 print(results.select(["Parameter", "Estimate", "CV_Percent"]))
 ```
 
-### Example 4: Bootstrap Replicate Variance
+---
+
+### _calculate_bootstrap_variance (VarianceEngine)
+
+#### Description
+Calculates variance empirically by computing point estimates across multiple replicate weight columns.
+
+#### Usage
+`engine._calculate_bootstrap_variance(df)` (Internal, called by `calculate_variance`)
+
+#### Arguments
+| Argument | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `df` | `pl.DataFrame` | REQUIRED | The input sampling frame with replicate weights. |
+
+#### Details
+Empirically computes variance across all provided bootstrap replicates.
+
+#### Value
+Polars DataFrame containing empirical Estimate, Variance, Standard Error, and CV%.
+
+#### References
+N/A
+
+#### Examples
 ```python
+# Example 4: Bootstrap Replicate Variance
 import polars as pl
 from variance_estimation.engine import VarianceEngine
 from variance_estimation.models import VarianceMetadata, ParameterRequest, VarianceDesignConfig
@@ -187,4 +226,50 @@ meta = VarianceMetadata(
 engine = VarianceEngine(meta)
 results = engine.calculate_variance(df)
 print(results.select(["Parameter", "Estimate", "Variance"]))
+```
+
+---
+
+## 4. Precision Analytics
+
+### calculate_precision_metrics
+
+#### Description
+Evaluates the calculated variances across all domains and parameters to generate macro-level precision diagnostics.
+
+#### Usage
+`calculate_precision_metrics(df_output)`
+
+#### Arguments
+| Argument | Type | Default | Description |
+| :--- | :--- | :--- | :--- |
+| `df_output` | `pl.DataFrame` | REQUIRED | The calculated variance DataFrame output from the engine. |
+
+#### Details
+Calculates the proportion of estimates meeting target CV thresholds and identifies domains with critically high variance.
+
+#### Value
+Dictionary containing precision metrics and threshold violation counts.
+
+#### References
+N/A
+
+#### Examples
+```python
+# Example 5: Precision Analytics
+import polars as pl
+from variance_estimation.analytics import calculate_precision_metrics
+
+# Simulated output from VarianceEngine.calculate_variance
+df_output = pl.DataFrame({
+    "Domain": ["Total", "Region A", "Region B"],
+    "Parameter": ["Total_Rev", "Total_Rev", "Total_Rev"],
+    "Estimate": [1000.0, 600.0, 400.0],
+    "CV_Percent": [5.2, 12.5, 35.0] # Region B has high CV
+})
+
+metrics = calculate_precision_metrics(df_output)
+print(f"Total Estimates Evaluated: {metrics['total_estimates']}")
+print(f"Estimates with CV > 16.5%: {metrics['cv_above_16_5']}")
+print(f"Estimates with CV > 33.3%: {metrics['cv_above_33_3']}")
 ```
