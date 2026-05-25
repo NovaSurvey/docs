@@ -132,19 +132,4 @@ Expect:
 
 ---
 
-## 📌 License
 
-Add your license here (e.g., MIT, Apache 2.0)
-
----
-
-## 🔥 Next Steps (Recommended)
-
-To improve adoption and trust:
-
-- Add a 1-minute demo GIF showing a full workflow
-- Provide a sample `.novaproj` file users can download
-- Add screenshots of the GUI Command Center
-- Publish one real-world example (e.g. “Labour survey pipeline demo”)
-
----
