@@ -1,21 +1,39 @@
-MIT License
+# NovaSurvey End User License Agreement (EULA)
+**Effective Date:** May 17, 2026  
+**Software:** NovaSurvey (Command Center GUI and Headless CLI)
 
-Copyright (c) 2026 NovaSurvey
+This End User License Agreement ("Agreement") is a binding legal contract between you (either an individual or an entity) and the developer of NovaSurvey. By downloading, accessing, or using the Software, you agree to be bound by the terms of this Agreement.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+---
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+### 1. License Grant and Tiers
+The Software is distributed under a Dual-License model. Your usage rights depend on your classification and license tier:
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+#### A. Educational and Individual Use (Free Tier)
+If you are an individual researcher, a student, or an academic professional using the Software strictly for educational, academic, or personal research purposes, you are granted a revocable, non-exclusive, non-transferable, and free license to use the Software.
+
+#### B. Free Trial Mode (Evaluation)
+If you are a commercial entity, government agency, or organization evaluating the Software without a Commercial License Key, you are granted a limited evaluation license. Under this tier, the Software's processing engine is strictly limited to a maximum of 10,000 rows per execution. Attempting to bypass, reverse engineer, or modify this technical limitation is a material breach of this Agreement.
+
+#### C. Enterprise and Commercial Use (Paid Tier)
+Any use of the Software for commercial purposes, internal corporate operations, government official statistics, or processing datasets exceeding the 10,000-row evaluation limit requires a valid Commercial Enterprise License. Enterprise Licenses are cryptographically signed and must be actively maintained.
+
+---
+
+### 2. Restrictions on Use
+Regardless of your license tier, you may not:
+* Decompile, reverse engineer, disassemble, or attempt to derive the source code of the compiled Cython mathematical engines (`.so` / `.pyd` files).
+* Remove, alter, or obscure any proprietary notices, copyright labels, or watermark branding from the Software.
+* Resell, lease, sublicense, or distribute the Software as a standalone commercial service or integrated API without explicit written consent.
+
+---
+
+### 3. Intellectual Property
+The Software, including its native React interface, Tkinter console, Polars integration architecture, and proprietary statistical methodologies, is the intellectual property of the developer and is protected by applicable copyright laws. No ownership rights are transferred to you under this Agreement.
+
+---
+
+### 4. Disclaimer of Warranty
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES, OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT, OR OTHERWISE, ARISING FROM, OUT OF, OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+Statistical processing involves inherent mathematical risks. The user assumes all responsibility for verifying the accuracy, variance impact, and validity of the final imputed or weighted datasets before publication.
