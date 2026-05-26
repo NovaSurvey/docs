@@ -120,6 +120,13 @@ NovaSurvey is built on a simple idea:
 The engine handles methodology automatically, while still producing reproducible and transparent outputs.
 
 ---
+## License
+
+NovaSurvey Software: The compiled binaries and releases distributed in this repository are proprietary and licensed under the NovaSurvey End User License Agreement (see the LICENSE file).
+
+Documentation: The markdown files, tutorials, and text in this repository are licensed under CC BY 4.0.
+
+Code Examples: Any API examples, Python translation snippets, or configuration templates provided in the documentation are licensed under the MIT License, allowing you to freely integrate them into your own workflows.
 
 ## 🛠️ Status
 
